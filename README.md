@@ -36,3 +36,10 @@ Current repository layout:
 
 - [Run on Mac mini](docs/mac-mini-run.md)
 - [Run on iPhone](docs/iphone-run.md)
+
+## Useful helper scripts
+
+- `./scripts/run-backend.sh` - run the backend manually
+- `./scripts/install-backend-launch-agent.sh` - keep the backend running on Mac mini via `launchd`
+- `./scripts/uninstall-backend-launch-agent.sh` - stop and remove the persistent backend service
+- `./scripts/set-ios-backend-url.sh http://<HOST>:8000/api/v1` - point the iPhone build and iPhone share extension at a reachable backend

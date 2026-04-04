@@ -47,22 +47,16 @@ If `en0` is not your active adapter, check `en1` or inspect System Settings -> N
 
 ## Change the iPhone backend address
 
-Open these two files or edit the corresponding target Info values in Xcode:
+Use the helper script:
+
+```bash
+./scripts/set-ios-backend-url.sh http://<MAC_MINI_LAN_IP>:8000/api/v1
+```
+
+This updates:
 
 - `apple/App/Config/iOS-Info.plist`
 - `apple/Extensions/Config/iOS-ShareExtension-Info.plist`
-
-Replace:
-
-```text
-http://127.0.0.1:8000/api/v1
-```
-
-with:
-
-```text
-http://<MAC_MINI_LAN_IP>:8000/api/v1
-```
 
 Do not change the macOS plist files if the Mac app still runs against the backend on the same Mac mini.
 
@@ -136,3 +130,4 @@ Important:
 - If the backend is reachable and the user is signed in, the share extension tries to save the link immediately.
 - If the backend is temporarily unavailable, the share extension queues the link in the shared App Group container.
 - The main app imports queued links on launch, sign-in, and when it becomes active.
+- If the iPhone says it cannot connect to the server, first open `http://<MAC_MINI_LAN_IP>:8000/api/v1/health` in Safari on the iPhone. If that fails, the problem is network reachability or firewall, not app auth.

@@ -30,11 +30,17 @@ public final class APIClient: @unchecked Sendable {
     public init(
         baseURL: URL,
         sessionStore: AuthSessionStore,
-        urlSession: URLSession = .shared
+        urlSession: URLSession? = nil
     ) {
         self.baseURL = baseURL
         self.sessionStore = sessionStore
-        self.urlSession = urlSession
+        if let urlSession {
+            self.urlSession = urlSession
+        } else {
+            let configuration = URLSessionConfiguration.default
+            configuration.waitsForConnectivity = true
+            self.urlSession = URLSession(configuration: configuration)
+        }
 
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
