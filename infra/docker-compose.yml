@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dekabristi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dekabristi
+      POSTGRES_USER: dekabristi
+      POSTGRES_PASSWORD: dekabristi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ../backend
+    container_name: dekabristi-api
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      DEKABRISTI_SECRET_KEY: local-development-secret
+      DEKABRISTI_DATABASE_URL: postgresql+psycopg://dekabristi:dekabristi@postgres:5432/dekabristi
+      DEKABRISTI_STORAGE_DIR: /data/storage
+    ports:
+      - "8000:8000"
+    volumes:
+      - api-storage:/data/storage
+
+volumes:
+  postgres-data:
+  api-storage:

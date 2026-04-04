@@ -1,0 +1,92 @@
+import Foundation
+
+public enum RemoteItemKind: String, Codable, Sendable {
+    case link
+    case file
+}
+
+public enum RemoteItemStatus: String, Codable, Sendable {
+    case queued
+    case uploading
+    case available
+    case failed
+}
+
+public struct RemoteAttachment: Codable, Identifiable, Equatable, Sendable {
+    public let id: String
+    public let originalFilename: String
+    public let contentType: String?
+    public let sizeBytes: Int
+    public let sha256: String
+    public let createdAt: Date
+}
+
+public struct RemoteItem: Codable, Identifiable, Equatable, Sendable {
+    public let id: String
+    public let kind: RemoteItemKind
+    public let status: RemoteItemStatus
+    public let title: String?
+    public let sourceURL: String?
+    public let createdAt: Date
+    public let updatedAt: Date
+    public let attachments: [RemoteAttachment]
+}
+
+public struct ItemListPage: Codable, Sendable {
+    public let items: [RemoteItem]
+    public let nextCursor: Date?
+}
+
+public struct SyncPage: Codable, Sendable {
+    public let items: [RemoteItem]
+    public let nextCursor: Date?
+    public let hasMore: Bool
+}
+
+public struct UserProfile: Codable, Equatable, Sendable {
+    public let id: String
+    public let email: String
+}
+
+public struct AuthSession: Codable, Equatable, Sendable {
+    public let accessToken: String
+    public let tokenType: String
+    public let user: UserProfile
+}
+
+public struct HealthStatus: Codable, Equatable, Sendable {
+    public let status: String
+    public let app: String
+    public let syncPollIntervalSeconds: Int
+    public let connectivityProbeIntervalSeconds: Int
+}
+
+public struct RegisterPayload: Encodable, Sendable {
+    public let email: String
+    public let password: String
+
+    public init(email: String, password: String) {
+        self.email = email
+        self.password = password
+    }
+}
+
+public struct LoginPayload: Encodable, Sendable {
+    public let email: String
+    public let password: String
+
+    public init(email: String, password: String) {
+        self.email = email
+        self.password = password
+    }
+}
+
+public struct CreateLinkPayload: Encodable, Sendable {
+    public let url: String
+    public let title: String?
+
+    public init(url: String, title: String?) {
+        self.url = url
+        self.title = title
+    }
+}
