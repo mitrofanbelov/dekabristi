@@ -2,6 +2,7 @@ import Foundation
 
 public enum APIClientError: Error, LocalizedError {
     case invalidResponse
+    case invalidResponsePayload(String)
     case inaccessibleFile(String)
     case serverError(statusCode: Int, message: String)
 
@@ -9,6 +10,8 @@ public enum APIClientError: Error, LocalizedError {
         switch self {
         case .invalidResponse:
             return "The server returned an invalid response."
+        case let .invalidResponsePayload(message):
+            return message
         case let .inaccessibleFile(path):
             return "The selected file could not be read from \(path)."
         case let .serverError(statusCode, message):
@@ -39,7 +42,7 @@ public final class APIClient: @unchecked Sendable {
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .custom(DateParser.decode)
         self.decoder = decoder
     }
 
@@ -166,7 +169,13 @@ public final class APIClient: @unchecked Sendable {
             throw APIClientError.serverError(statusCode: httpResponse.statusCode, message: message)
         }
 
-        return try decoder.decode(Response.self, from: data)
+        do {
+            return try decoder.decode(Response.self, from: data)
+        } catch {
+            throw APIClientError.invalidResponsePayload(
+                "The server response could not be decoded. Please refresh and try again."
+            )
+        }
     }
 
     private func makeMultipartBody(fileURL: URL, title: String?, boundary: String) throws -> Data {
@@ -240,6 +249,69 @@ public final class APIClient: @unchecked Sendable {
 
             if !messages.isEmpty {
                 return messages.joined(separator: "\n")
+            }
+        }
+
+        return nil
+    }
+}
+
+private enum DateParser {
+    private static let knownFormats = [
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ss.SXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ssXXXXX",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSS",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSS",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        "yyyy-MM-dd'T'HH:mm:ss.SS",
+        "yyyy-MM-dd'T'HH:mm:ss.S",
+        "yyyy-MM-dd'T'HH:mm:ss",
+    ]
+
+    static func decode(from decoder: Decoder) throws -> Date {
+        let container = try decoder.singleValueContainer()
+
+        if let secondsSince1970 = try? container.decode(Double.self) {
+            return Date(timeIntervalSince1970: secondsSince1970)
+        }
+
+        let rawValue = try container.decode(String.self)
+        if let date = parse(rawValue) {
+            return date
+        }
+
+        throw DecodingError.dataCorruptedError(
+            in: container,
+            debugDescription: "Unsupported date format: \(rawValue)"
+        )
+    }
+
+    private static func parse(_ rawValue: String) -> Date? {
+        let isoWithFractional = ISO8601DateFormatter()
+        isoWithFractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let parsed = isoWithFractional.date(from: rawValue) {
+            return parsed
+        }
+
+        let isoStandard = ISO8601DateFormatter()
+        isoStandard.formatOptions = [.withInternetDateTime]
+        if let parsed = isoStandard.date(from: rawValue) {
+            return parsed
+        }
+
+        for format in knownFormats {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = format
+            if let parsed = formatter.date(from: rawValue) {
+                return parsed
             }
         }
 
