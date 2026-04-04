@@ -9,8 +9,14 @@ This folder starts with a shared Swift package so we can build the app core on t
 - connectivity monitor based on `NWPathMonitor`
 - outbox queue for link and file drafts
 - sync coordinator for launch/manual/periodic refresh flows
-- lightweight SwiftUI blueprint views to show composition
+- persistent auth session and App Group backed shared-link queue
+- iOS and macOS share extension sources for quick link saving from the system share sheet
 
 ## Next Apple-specific step on Mac
 
-Generate actual `iOS`, `macOS`, and share extension targets around this package using Xcode project tooling on the Mac mini.
+Generate the Xcode project on the Mac mini, assign a signing team, and test:
+
+- `DekabristiMac`
+- `DekabristiIOS`
+- `DekabristiMacShareExtension`
+- `DekabristiIOSShareExtension`

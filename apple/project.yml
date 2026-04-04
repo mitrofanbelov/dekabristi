@@ -22,8 +22,12 @@ targets:
     dependencies:
       - package: SaveCore
         product: SaveCore
+      - target: DekabristiMacShareExtension
+        embed: true
     info:
       path: App/Config/macOS-Info.plist
+    entitlements:
+      path: App/Config/macOS-App.entitlements
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.mac
@@ -35,6 +39,29 @@ targets:
         CURRENT_PROJECT_VERSION: 1
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
+  DekabristiMacShareExtension:
+    type: app-extension
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Extensions/Shared
+    dependencies:
+      - package: SaveCore
+        product: SaveCore
+    info:
+      path: Extensions/Config/macOS-ShareExtension-Info.plist
+    entitlements:
+      path: Extensions/Config/macOS-ShareExtension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.mac.share
+        PRODUCT_NAME: Dekabristi Share
+        SWIFT_VERSION: 5.10
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: NO
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+
   DekabristiIOS:
     type: application
     platform: iOS
@@ -45,8 +72,12 @@ targets:
     dependencies:
       - package: SaveCore
         product: SaveCore
+      - target: DekabristiIOSShareExtension
+        embed: true
     info:
       path: App/Config/iOS-Info.plist
+    entitlements:
+      path: App/Config/iOS-App.entitlements
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.ios
@@ -57,3 +88,26 @@ targets:
         MARKETING_VERSION: 0.1.0
         CURRENT_PROJECT_VERSION: 1
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
+  DekabristiIOSShareExtension:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Extensions/Shared
+    dependencies:
+      - package: SaveCore
+        product: SaveCore
+    info:
+      path: Extensions/Config/iOS-ShareExtension-Info.plist
+    entitlements:
+      path: Extensions/Config/iOS-ShareExtension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.ios.share
+        PRODUCT_NAME: Dekabristi Share
+        SWIFT_VERSION: 5.10
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: NO
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1

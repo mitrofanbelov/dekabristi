@@ -16,7 +16,9 @@ Current repository layout:
 - upload arbitrary files
 - list saved items
 - incremental sync endpoint
+- delete items and edit comments
 - basic offline-first client core for Apple platforms
+- iOS and macOS share extension support for quick link saving from the system share sheet
 
 ## Local backend run
 
@@ -29,3 +31,8 @@ Current repository layout:
 ## Docker
 
 `infra/docker-compose.yml` contains the first local deployment template that can be adapted for the always-on Mac mini later.
+
+## Apple device runbooks
+
+- [Run on Mac mini](docs/mac-mini-run.md)
+- [Run on iPhone](docs/iphone-run.md)

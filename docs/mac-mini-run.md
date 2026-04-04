@@ -41,6 +41,17 @@ open apple/Dekabristi.xcodeproj
 4. Add a link or import a file.
 5. Verify that content appears in the library and that the backend logs the requests.
 
+## Enable the Share extension on macOS
+
+1. In Xcode, make sure the signing team is set for:
+   - `DekabristiMac`
+   - `DekabristiMacShareExtension`
+2. Build `DekabristiMac` once.
+3. Open Safari or another macOS app that exposes the system `Share` menu for URLs.
+4. Click `Share`.
+5. If `Dekabristi Share` is not visible yet, use `More...` or macOS extension settings and enable it.
+6. Choose `Dekabristi Share`, save the link, then return to the main app and press `Refresh` if needed.
+
 ## Backend verification
 
 Run the backend test suite at any time:
@@ -51,6 +62,6 @@ Run the backend test suite at any time:
 
 ## Important notes
 
-- The first runnable version prioritizes the main macOS app flow.
-- Share extensions are not wired into Xcode yet; they are the next concrete slice.
-- The default API base URL is `http://127.0.0.1:8000/api/v1`, which is correct when the macOS app and backend run on the same Mac mini.
+- The default API base URL is `http://127.0.0.1:8000/api/v1`, which is correct when the macOS app, macOS share extension, and backend run on the same Mac mini.
+- Physical iPhone builds cannot use `127.0.0.1`; they need the Mac mini LAN address or a public HTTPS domain.
+- The app and share extensions use the shared App Group `group.com.dekabristi.shared`.

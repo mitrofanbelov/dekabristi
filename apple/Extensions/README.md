@@ -1,10 +1,18 @@
 # Share Extensions
 
-The first runnable repository version prioritizes the main macOS and iOS app targets so the project can be generated and launched on a Mac immediately.
+The repository now includes share extension targets for:
 
-Planned next step:
+- `DekabristiIOSShareExtension`
+- `DekabristiMacShareExtension`
 
-- add iOS share extension target
-- add macOS share extension target
-- wire both to an App Group backed outbox store
-- let the extension save link/file payloads and trigger the main app to upload them when connectivity is available
+Current behavior:
+
+- the extension appears in the Apple system share sheet for web links
+- if the user is already signed in, the extension tries to save the link straight to the backend
+- if the network or auth path is not available, the extension queues the link inside the shared App Group container
+- the main app imports queued shared links on launch, sign-in, or when it becomes active
+
+Current scope:
+
+- quick saving of links from `Share`
+- no file sharing through the extension yet

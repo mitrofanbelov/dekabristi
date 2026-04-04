@@ -46,12 +46,17 @@ final class AppController: ObservableObject {
     let connectivityMonitor: ConnectivityMonitor
 
     private let apiClient: APIClient
+    private let sessionStore: AuthSessionStore
+    private let pendingSharedLinkStore: PendingSharedLinkStore
     private let fileManager = FileManager.default
     private var periodicTask: Task<Void, Never>?
     private var hasStarted = false
 
     init() {
-        let sessionStore = AuthSessionStore()
+        let sharedUserDefaults = SharedAppConfiguration.sharedUserDefaults()
+        let sessionStore = AuthSessionStore(userDefaults: sharedUserDefaults)
+        self.sessionStore = sessionStore
+        self.pendingSharedLinkStore = PendingSharedLinkStore(userDefaults: sharedUserDefaults)
         self.apiClient = APIClient(
             baseURL: AppConfiguration.apiBaseURL(),
             sessionStore: sessionStore
@@ -68,7 +73,13 @@ final class AppController: ObservableObject {
         guard !hasStarted else { return }
         hasStarted = true
         connectivityMonitor.start()
+        await restoreSessionIfAvailable()
+        await importPendingSharedLinksIfNeeded()
         await connectivityMonitor.refreshServerReachability()
+
+        if currentUser != nil {
+            await syncCoordinator.refreshFromLaunchOrManualTrigger()
+        }
 
         periodicTask = Task { [weak self] in
             guard let self else { return }
@@ -77,8 +88,10 @@ final class AppController: ObservableObject {
     }
 
     func handleAppBecameActive() async {
+        await restoreSessionIfAvailable()
         await connectivityMonitor.refreshServerReachability()
         guard currentUser != nil else { return }
+        await importPendingSharedLinksIfNeeded()
         await syncCoordinator.refreshFromLaunchOrManualTrigger()
     }
 
@@ -86,6 +99,7 @@ final class AppController: ObservableObject {
         await authenticate {
             let session = try await apiClient.login(email: email, password: password)
             currentUser = session.user
+            await importPendingSharedLinksIfNeeded()
             await syncCoordinator.refreshFromLaunchOrManualTrigger()
         }
     }
@@ -94,6 +108,7 @@ final class AppController: ObservableObject {
         await authenticate {
             let session = try await apiClient.register(email: email, password: password)
             currentUser = session.user
+            await importPendingSharedLinksIfNeeded()
             await syncCoordinator.refreshFromLaunchOrManualTrigger()
         }
     }
@@ -194,6 +209,42 @@ final class AppController: ObservableObject {
 
     func clearNoticeMessage() {
         noticeMessage = nil
+    }
+
+    private func restoreSessionIfAvailable() async {
+        guard currentUser == nil, let session = await sessionStore.session() else { return }
+        currentUser = session.user
+
+        do {
+            let profile = try await apiClient.me()
+            currentUser = profile
+            await sessionStore.update(
+                AuthSession(
+                    accessToken: session.accessToken,
+                    tokenType: session.tokenType,
+                    user: profile
+                )
+            )
+        } catch let APIClientError.serverError(statusCode, _) where statusCode == 401 || statusCode == 403 {
+            await sessionStore.clear()
+            currentUser = nil
+        } catch {
+            currentUser = session.user
+        }
+    }
+
+    private func importPendingSharedLinksIfNeeded() async {
+        guard currentUser != nil else { return }
+
+        let pendingLinks = await pendingSharedLinkStore.drain()
+        guard !pendingLinks.isEmpty else { return }
+
+        for pendingLink in pendingLinks {
+            await syncCoordinator.queueLink(url: pendingLink.url, title: pendingLink.title)
+        }
+
+        let noun = pendingLinks.count == 1 ? "link" : "links"
+        noticeMessage = "Imported \(pendingLinks.count) shared \(noun)."
     }
 
     private func authenticate(_ work: @escaping () async throws -> Void) async {
