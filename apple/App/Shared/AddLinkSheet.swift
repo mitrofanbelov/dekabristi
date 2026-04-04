@@ -6,6 +6,7 @@ struct AddLinkSheet: View {
     @ObservedObject var controller: AppController
     @State private var title = ""
     @State private var urlString = ""
+    @State private var validationMessage: String?
 
     var body: some View {
         NavigationStack {
@@ -18,6 +19,16 @@ struct AddLinkSheet: View {
 #else
                 TextField("https://example.com", text: $urlString)
 #endif
+
+                Text("If you paste a link without a scheme, Dekabristi will try to save it as https://...")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                if let validationMessage {
+                    Text(validationMessage)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
             }
             .navigationTitle("Add Link")
             .toolbar {
@@ -30,14 +41,19 @@ struct AddLinkSheet: View {
                 ToolbarItem(placement: confirmPlacement) {
                     Button("Save") {
                         Task {
-                            await controller.addLink(
+                            validationMessage = nil
+                            let didSave = await controller.addLink(
                                 url: urlString,
                                 title: title.isEmpty ? nil : title
                             )
-                            dismiss()
+                            if didSave {
+                                dismiss()
+                            } else {
+                                validationMessage = controller.syncCoordinator.lastErrorMessage ?? "Could not save the link."
+                            }
                         }
                     }
-                    .disabled(urlString.isEmpty)
+                    .disabled(urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }
         }

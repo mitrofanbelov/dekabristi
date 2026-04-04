@@ -67,7 +67,28 @@ struct LibraryScreen: View {
             }
             .navigationTitle("Library")
             .safeAreaInset(edge: .top) {
-                ConnectionStatusBanner(status: monitor.status)
+                VStack(spacing: 0) {
+                    ConnectionStatusBanner(status: monitor.status)
+
+                    if let lastErrorMessage = coordinator.lastErrorMessage {
+                        HStack(alignment: .top, spacing: 12) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundStyle(.white)
+                            Text(lastErrorMessage)
+                                .font(.caption)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Button("Dismiss") {
+                                coordinator.clearErrorMessage()
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(.white.opacity(0.9))
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .background(Color.red.opacity(0.9))
+                    }
+                }
             }
         }
         .sheet(isPresented: $isShowingAddLinkSheet) {
@@ -78,9 +99,20 @@ struct LibraryScreen: View {
             allowedContentTypes: [.data, .item],
             allowsMultipleSelection: false
         ) { result in
-            guard let selectedURL = try? result.get().first else { return }
-            Task {
-                await controller.importFile(from: selectedURL, title: selectedURL.lastPathComponent)
+            do {
+                guard let selectedURL = try result.get().first else {
+                    coordinator.setErrorMessage("No file was selected.")
+                    return
+                }
+
+                Task {
+                    _ = await controller.importFile(
+                        from: selectedURL,
+                        title: selectedURL.lastPathComponent
+                    )
+                }
+            } catch {
+                coordinator.setErrorMessage(error.localizedDescription)
             }
         }
         .task {

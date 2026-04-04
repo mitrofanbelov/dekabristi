@@ -2,12 +2,15 @@ import Foundation
 
 public enum APIClientError: Error, LocalizedError {
     case invalidResponse
+    case inaccessibleFile(String)
     case serverError(statusCode: Int, message: String)
 
     public var errorDescription: String? {
         switch self {
         case .invalidResponse:
             return "The server returned an invalid response."
+        case let .inaccessibleFile(path):
+            return "The selected file could not be read from \(path)."
         case let .serverError(statusCode, message):
             return "Server error \(statusCode): \(message)"
         }
@@ -159,7 +162,7 @@ public final class APIClient: @unchecked Sendable {
         }
 
         guard (200..<300).contains(httpResponse.statusCode) else {
-            let message = String(data: data, encoding: .utf8) ?? "Unknown error"
+            let message = serverMessage(from: data, statusCode: httpResponse.statusCode)
             throw APIClientError.serverError(statusCode: httpResponse.statusCode, message: message)
         }
 
@@ -176,7 +179,12 @@ public final class APIClient: @unchecked Sendable {
         }
 
         let filename = fileURL.lastPathComponent
-        let fileData = try Data(contentsOf: fileURL)
+        let fileData: Data
+        do {
+            fileData = try Data(contentsOf: fileURL)
+        } catch {
+            throw APIClientError.inaccessibleFile(fileURL.path)
+        }
         data.append("--\(boundary)\r\n")
         data.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n")
         data.append("Content-Type: application/octet-stream\r\n\r\n")
@@ -184,6 +192,58 @@ public final class APIClient: @unchecked Sendable {
         data.append("\r\n")
         data.append("--\(boundary)--\r\n")
         return data
+    }
+
+    private func serverMessage(from data: Data, statusCode: Int) -> String {
+        if let extractedMessage = extractFastAPIMessage(from: data) {
+            return extractedMessage
+        }
+
+        if let plainText = String(data: data, encoding: .utf8), !plainText.isEmpty {
+            return plainText
+        }
+
+        if statusCode == 422 {
+            return "The server rejected the submitted data as invalid."
+        }
+
+        return "Unknown error"
+    }
+
+    private func extractFastAPIMessage(from data: Data) -> String? {
+        guard
+            let jsonObject = try? JSONSerialization.jsonObject(with: data),
+            let payload = jsonObject as? [String: Any],
+            let detail = payload["detail"]
+        else {
+            return nil
+        }
+
+        if let detailString = detail as? String {
+            return detailString
+        }
+
+        if let detailItems = detail as? [[String: Any]] {
+            let messages = detailItems.compactMap { item -> String? in
+                let rawMessage = item["msg"] as? String
+                let locationParts = (item["loc"] as? [Any])?
+                    .dropFirst()
+                    .map { String(describing: $0) }
+                    .joined(separator: " -> ")
+
+                if let rawMessage, let locationParts, !locationParts.isEmpty {
+                    return "\(locationParts): \(rawMessage)"
+                }
+
+                return rawMessage
+            }
+
+            if !messages.isEmpty {
+                return messages.joined(separator: "\n")
+            }
+        }
+
+        return nil
     }
 }
 

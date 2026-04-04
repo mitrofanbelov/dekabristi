@@ -1,5 +1,4 @@
 import Combine
-import Combine
 import Foundation
 
 public actor SyncCheckpointStore {
@@ -68,6 +67,14 @@ public final class SyncCoordinator: ObservableObject {
                 localFilePath: localFileURL.path
             )
         )
+    }
+
+    public func setErrorMessage(_ message: String) {
+        lastErrorMessage = message
+    }
+
+    public func clearErrorMessage() {
+        lastErrorMessage = nil
     }
 
     private func refresh(forceFullReload: Bool) async {
