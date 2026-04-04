@@ -95,6 +95,23 @@ public final class APIClient: @unchecked Sendable {
         )
     }
 
+    public func updateItemComment(itemID: String, comment: String?) async throws -> RemoteItem {
+        try await request(
+            path: "/items/\(itemID)",
+            method: "PATCH",
+            body: UpdateItemPayload(comment: comment),
+            responseType: RemoteItem.self
+        )
+    }
+
+    public func deleteItem(itemID: String) async throws -> RemoteItem {
+        try await request(
+            path: "/items/\(itemID)",
+            method: "DELETE",
+            responseType: RemoteItem.self
+        )
+    }
+
     public func uploadFile(fileURL: URL, title: String?) async throws -> RemoteItem {
         let boundary = UUID().uuidString
         let payload = try makeMultipartBody(fileURL: fileURL, title: title, boundary: boundary)
@@ -104,6 +121,31 @@ public final class APIClient: @unchecked Sendable {
             bodyData: payload,
             contentType: "multipart/form-data; boundary=\(boundary)",
             responseType: RemoteItem.self
+        )
+    }
+
+    public func downloadAttachment(_ attachmentID: String) async throws -> DownloadedAttachment {
+        let request = try await makeRequest(
+            path: "/items/attachments/\(attachmentID)/download",
+            method: "GET",
+            timeoutInterval: 300
+        )
+        let (temporaryFileURL, response) = try await urlSession.download(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        guard (200..<300).contains(httpResponse.statusCode) else {
+            let (data, _) = try await urlSession.data(for: request)
+            let message = serverMessage(from: data, statusCode: httpResponse.statusCode)
+            throw APIClientError.serverError(statusCode: httpResponse.statusCode, message: message)
+        }
+
+        return DownloadedAttachment(
+            temporaryFileURL: temporaryFileURL,
+            suggestedFilename: response.suggestedFilename ?? attachmentID,
+            contentType: response.mimeType
         )
     }
 
@@ -133,32 +175,13 @@ public final class APIClient: @unchecked Sendable {
         contentType: String? = nil,
         responseType: Response.Type
     ) async throws -> Response {
-        let normalizedPath = path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        var components = URLComponents(
-            url: baseURL.appendingPathComponent(normalizedPath),
-            resolvingAgainstBaseURL: false
+        let request = try await makeRequest(
+            path: path,
+            method: method,
+            queryItems: queryItems,
+            bodyData: bodyData,
+            contentType: contentType
         )
-        if !queryItems.isEmpty {
-            components?.queryItems = queryItems
-        }
-
-        guard let url = components?.url else {
-            throw APIClientError.invalidResponse
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.httpBody = bodyData
-        request.timeoutInterval = 60
-
-        if let contentType {
-            request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-        }
-
-        if let session = await sessionStore.session() {
-            request.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")
-        }
-
         let (data, response) = try await urlSession.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIClientError.invalidResponse
@@ -176,6 +199,43 @@ public final class APIClient: @unchecked Sendable {
                 "The server response could not be decoded. Please refresh and try again."
             )
         }
+    }
+
+    private func makeRequest(
+        path: String,
+        method: String,
+        queryItems: [URLQueryItem] = [],
+        bodyData: Data? = nil,
+        contentType: String? = nil,
+        timeoutInterval: TimeInterval = 60
+    ) async throws -> URLRequest {
+        let normalizedPath = path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        var components = URLComponents(
+            url: baseURL.appendingPathComponent(normalizedPath),
+            resolvingAgainstBaseURL: false
+        )
+        if !queryItems.isEmpty {
+            components?.queryItems = queryItems
+        }
+
+        guard let url = components?.url else {
+            throw APIClientError.invalidResponse
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        request.httpBody = bodyData
+        request.timeoutInterval = timeoutInterval
+
+        if let contentType {
+            request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        }
+
+        if let session = await sessionStore.session() {
+            request.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")
+        }
+
+        return request
     }
 
     private func makeMultipartBody(fileURL: URL, title: String?, boundary: String) throws -> Data {
@@ -253,6 +313,18 @@ public final class APIClient: @unchecked Sendable {
         }
 
         return nil
+    }
+}
+
+public struct DownloadedAttachment: Sendable {
+    public let temporaryFileURL: URL
+    public let suggestedFilename: String
+    public let contentType: String?
+
+    public init(temporaryFileURL: URL, suggestedFilename: String, contentType: String?) {
+        self.temporaryFileURL = temporaryFileURL
+        self.suggestedFilename = suggestedFilename
+        self.contentType = contentType
     }
 }
 

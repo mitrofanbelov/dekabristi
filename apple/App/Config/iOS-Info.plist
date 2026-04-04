@@ -27,6 +27,8 @@
 	</dict>
 	<key>UILaunchScreen</key>
 	<dict/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Dekabristi saves downloaded photos and videos to your photo library.</string>
 	<key>DEKABRISTI_API_BASE_URL</key>
 	<string>http://127.0.0.1:8000/api/v1</string>
 </dict>

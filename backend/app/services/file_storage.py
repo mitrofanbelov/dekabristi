@@ -64,3 +64,17 @@ def save_upload(user_id: str, item_id: str, upload_file: UploadFile) -> StoredFi
         size_bytes=size_bytes,
         sha256=digest.hexdigest(),
     )
+
+
+def delete_stored_file(relative_path: str) -> None:
+    settings = get_settings()
+    destination = settings.resolved_storage_dir / Path(relative_path)
+    destination.unlink(missing_ok=True)
+
+    parent = destination.parent
+    while parent != settings.resolved_storage_dir:
+        try:
+            parent.rmdir()
+        except OSError:
+            break
+        parent = parent.parent

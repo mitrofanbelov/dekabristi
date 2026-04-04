@@ -96,3 +96,48 @@ def test_create_link_file_and_sync(client: TestClient) -> None:
     assert sync.status_code == 200
     assert len(sync.json()["items"]) == 2
     assert sync.json()["has_more"] is False
+
+
+def test_update_comment_delete_item_and_download_attachment(client: TestClient) -> None:
+    headers = auth_headers(client)
+
+    file_response = client.post(
+        "/api/v1/items/files",
+        files={"file": ("hello.txt", BytesIO(b"hello world"), "text/plain")},
+        headers=headers,
+    )
+    assert file_response.status_code == 201
+    item_payload = file_response.json()
+    item_id = item_payload["id"]
+    attachment_id = item_payload["attachments"][0]["id"]
+
+    comment_update = client.patch(
+        f"/api/v1/items/{item_id}",
+        json={"comment": "Need this on every device"},
+        headers=headers,
+    )
+    assert comment_update.status_code == 200
+    assert comment_update.json()["comment"] == "Need this on every device"
+
+    download = client.get(f"/api/v1/items/attachments/{attachment_id}/download", headers=headers)
+    assert download.status_code == 200
+    assert download.content == b"hello world"
+
+    delete_response = client.delete(f"/api/v1/items/{item_id}", headers=headers)
+    assert delete_response.status_code == 200
+    assert delete_response.json()["deleted_at"] is not None
+
+    feed = client.get("/api/v1/items", headers=headers)
+    assert feed.status_code == 200
+    assert feed.json()["items"] == []
+
+    sync = client.get("/api/v1/items/sync", headers=headers)
+    assert sync.status_code == 200
+    assert len(sync.json()["items"]) == 1
+    assert sync.json()["items"][0]["deleted_at"] is not None
+
+    missing_download = client.get(
+        f"/api/v1/items/attachments/{attachment_id}/download",
+        headers=headers,
+    )
+    assert missing_download.status_code == 404

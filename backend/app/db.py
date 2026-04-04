@@ -32,7 +32,11 @@ def get_session_factory():
 def init_db() -> None:
     settings = get_settings()
     settings.resolved_storage_dir.mkdir(parents=True, exist_ok=True)
-    Base.metadata.create_all(bind=get_engine())
+    engine = get_engine()
+    Base.metadata.create_all(bind=engine)
+
+    if settings.is_sqlite:
+        _apply_sqlite_schema_fixes(engine)
 
 
 def get_db() -> Generator[Session, None, None]:
@@ -42,3 +46,17 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
+
+
+def _apply_sqlite_schema_fixes(engine) -> None:
+    with engine.begin() as connection:
+        column_names = {
+            row[1]
+            for row in connection.exec_driver_sql("PRAGMA table_info(items)").fetchall()
+        }
+
+        if "comment" not in column_names:
+            connection.exec_driver_sql("ALTER TABLE items ADD COLUMN comment TEXT")
+
+        if "deleted_at" not in column_names:
+            connection.exec_driver_sql("ALTER TABLE items ADD COLUMN deleted_at DATETIME")

@@ -27,8 +27,10 @@ public struct RemoteItem: Codable, Identifiable, Equatable, Sendable {
     public let status: RemoteItemStatus
     public let title: String?
     public let sourceURL: String?
+    public let comment: String?
     public let createdAt: Date
     public let updatedAt: Date
+    public let deletedAt: Date?
     public let attachments: [RemoteAttachment]
 }
 
@@ -88,5 +90,13 @@ public struct CreateLinkPayload: Encodable, Sendable {
     public init(url: String, title: String?) {
         self.url = url
         self.title = title
+    }
+}
+
+public struct UpdateItemPayload: Encodable, Sendable {
+    public let comment: String?
+
+    public init(comment: String?) {
+        self.comment = comment
     }
 }

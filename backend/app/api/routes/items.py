@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -12,22 +12,34 @@ from sqlalchemy.orm import Session, selectinload
 from app.api.dependencies import get_current_user
 from app.db import get_db
 from app.models import Attachment, Item, ItemKind, ItemStatus, User
-from app.schemas.items import CreateLinkRequest, ItemListResponse, ItemResponse, SyncResponse
-from app.services.file_storage import save_upload
+from app.schemas.items import (
+    CreateLinkRequest,
+    ItemListResponse,
+    ItemResponse,
+    SyncResponse,
+    UpdateItemRequest,
+)
+from app.services.file_storage import delete_stored_file, save_upload
 
 router = APIRouter(prefix="/items", tags=["items"])
 
 
-def _item_query_for_user(user_id: str) -> Select[tuple[Item]]:
-    return (
-        select(Item)
-        .where(Item.user_id == user_id)
-        .options(selectinload(Item.attachments))
-    )
+def _item_query_for_user(user_id: str, include_deleted: bool = False) -> Select[tuple[Item]]:
+    query = select(Item).where(Item.user_id == user_id).options(selectinload(Item.attachments))
+    if not include_deleted:
+        query = query.where(Item.deleted_at.is_(None))
+    return query
 
 
 def _serialize_items(items: list[Item]) -> list[ItemResponse]:
     return [ItemResponse.model_validate(item) for item in items]
+
+
+def _item_for_user(db: Session, user_id: str, item_id: str, include_deleted: bool = False) -> Item:
+    item = db.scalar(_item_query_for_user(user_id, include_deleted=include_deleted).where(Item.id == item_id))
+    if item is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found.")
+    return item
 
 
 @router.post("/links", response_model=ItemResponse, status_code=status.HTTP_201_CREATED)
@@ -112,7 +124,7 @@ def sync_items(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> SyncResponse:
-    query = _item_query_for_user(current_user.id).order_by(Item.updated_at.asc()).limit(limit)
+    query = _item_query_for_user(current_user.id, include_deleted=True).order_by(Item.updated_at.asc()).limit(limit)
     if cursor is not None:
         query = query.where(Item.updated_at > cursor)
 
@@ -134,7 +146,11 @@ def download_attachment(
     attachment = db.scalar(
         select(Attachment)
         .join(Attachment.item)
-        .where(Attachment.id == attachment_id, Item.user_id == current_user.id)
+        .where(
+            Attachment.id == attachment_id,
+            Item.user_id == current_user.id,
+            Item.deleted_at.is_(None),
+        )
     )
     if attachment is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Attachment not found.")
@@ -150,3 +166,43 @@ def download_attachment(
         media_type=attachment.content_type or "application/octet-stream",
         filename=attachment.original_filename,
     )
+
+
+@router.patch("/{item_id}", response_model=ItemResponse)
+def update_item(
+    item_id: str,
+    payload: UpdateItemRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> ItemResponse:
+    item = _item_for_user(db, current_user.id, item_id)
+    item.comment = _normalized_comment(payload.comment)
+    db.commit()
+    db.refresh(item)
+    return ItemResponse.model_validate(item)
+
+
+@router.delete("/{item_id}", response_model=ItemResponse)
+def delete_item(
+    item_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> ItemResponse:
+    item = _item_for_user(db, current_user.id, item_id)
+    if item.deleted_at is None:
+        item.deleted_at = datetime.now(timezone.utc)
+        for attachment in item.attachments:
+            delete_stored_file(attachment.relative_path)
+
+    db.commit()
+
+    refreshed_item = _item_for_user(db, current_user.id, item_id, include_deleted=True)
+    return ItemResponse.model_validate(refreshed_item)
+
+
+def _normalized_comment(comment: str | None) -> str | None:
+    if comment is None:
+        return None
+
+    trimmed = comment.strip()
+    return trimmed or None

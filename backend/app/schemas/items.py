@@ -31,8 +31,10 @@ class ItemResponse(BaseModel):
     status: ItemStatus
     title: str | None
     source_url: str | None
+    comment: str | None
     created_at: datetime
     updated_at: datetime
+    deleted_at: datetime | None
     attachments: list[AttachmentResponse] = []
 
 
@@ -45,3 +47,7 @@ class SyncResponse(BaseModel):
     items: list[ItemResponse]
     next_cursor: datetime | None
     has_more: bool
+
+
+class UpdateItemRequest(BaseModel):
+    comment: str | None = Field(default=None, max_length=4_000)

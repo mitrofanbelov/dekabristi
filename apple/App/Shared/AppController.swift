@@ -1,6 +1,11 @@
 import Combine
 import Foundation
 import SaveCore
+#if os(iOS)
+import Photos
+#elseif os(macOS)
+import AppKit
+#endif
 
 private enum FileImportPreparationError: LocalizedError {
     case noReadableFile
@@ -16,11 +21,26 @@ private enum FileImportPreparationError: LocalizedError {
     }
 }
 
+private enum FileActionError: LocalizedError {
+    case missingAttachment
+    case photoLibraryAccessDenied
+
+    var errorDescription: String? {
+        switch self {
+        case .missingAttachment:
+            return "This file entry does not have a downloadable attachment yet."
+        case .photoLibraryAccessDenied:
+            return "Dekabristi does not have permission to save media to your photo library."
+        }
+    }
+}
+
 @MainActor
 final class AppController: ObservableObject {
     @Published private(set) var currentUser: UserProfile?
     @Published private(set) var isAuthenticating = false
     @Published private(set) var authErrorMessage: String?
+    @Published private(set) var noticeMessage: String?
 
     let syncCoordinator: SyncCoordinator
     let connectivityMonitor: ConnectivityMonitor
@@ -81,6 +101,7 @@ final class AppController: ObservableObject {
     func addLink(url: String, title: String?) async -> Bool {
         do {
             let normalizedURL = try LinkInputNormalizer.normalize(url)
+            noticeMessage = nil
             syncCoordinator.clearErrorMessage()
             await syncCoordinator.queueLink(
                 url: normalizedURL,
@@ -98,6 +119,7 @@ final class AppController: ObservableObject {
     func importFile(from url: URL, title: String?) async -> Bool {
         do {
             let stagedURL = try stageImportedFile(from: url)
+            noticeMessage = nil
             syncCoordinator.clearErrorMessage()
             await syncCoordinator.queueFile(
                 localFileURL: stagedURL,
@@ -115,6 +137,63 @@ final class AppController: ObservableObject {
     func refreshNow() async {
         guard currentUser != nil else { return }
         await syncCoordinator.refreshFromLaunchOrManualTrigger()
+    }
+
+    func saveComment(for item: RemoteItem, comment: String?) async -> Bool {
+        do {
+            noticeMessage = nil
+            syncCoordinator.clearErrorMessage()
+            let updatedItem = try await apiClient.updateItemComment(
+                itemID: item.id,
+                comment: normalizedOptionalText(comment)
+            )
+            syncCoordinator.applyServerItem(updatedItem)
+            return true
+        } catch {
+            syncCoordinator.setErrorMessage(error.localizedDescription)
+            return false
+        }
+    }
+
+    func delete(_ item: RemoteItem) async -> Bool {
+        do {
+            noticeMessage = nil
+            syncCoordinator.clearErrorMessage()
+            let deletedItem = try await apiClient.deleteItem(itemID: item.id)
+            syncCoordinator.applyServerItem(deletedItem)
+            noticeMessage = item.kind == .link ? "Link deleted." : "File deleted."
+            return true
+        } catch {
+            syncCoordinator.setErrorMessage(error.localizedDescription)
+            return false
+        }
+    }
+
+    func downloadFile(for item: RemoteItem) async -> Bool {
+        guard let attachment = item.attachments.first else {
+            syncCoordinator.setErrorMessage(FileActionError.missingAttachment.localizedDescription)
+            return false
+        }
+
+        do {
+            noticeMessage = nil
+            syncCoordinator.clearErrorMessage()
+            let downloadedAttachment = try await apiClient.downloadAttachment(attachment.id)
+            let savedLocationMessage = try await persistDownloadedAttachment(
+                downloadedAttachment,
+                preferredFilename: attachment.originalFilename,
+                contentType: attachment.contentType
+            )
+            noticeMessage = savedLocationMessage
+            return true
+        } catch {
+            syncCoordinator.setErrorMessage(error.localizedDescription)
+            return false
+        }
+    }
+
+    func clearNoticeMessage() {
+        noticeMessage = nil
     }
 
     private func authenticate(_ work: @escaping () async throws -> Void) async {
@@ -213,6 +292,119 @@ final class AppController: ObservableObject {
 
         return candidateURL
     }
+
+    private func persistDownloadedAttachment(
+        _ downloadedAttachment: DownloadedAttachment,
+        preferredFilename: String,
+        contentType: String?
+    ) async throws -> String {
+#if os(iOS)
+        if isPhotoLibraryMedia(contentType: contentType, fileURL: downloadedAttachment.temporaryFileURL) {
+            let stagingDirectory = fileManager.temporaryDirectory
+                .appendingPathComponent("DekabristiMediaDownloads", isDirectory: true)
+            try fileManager.createDirectory(at: stagingDirectory, withIntermediateDirectories: true)
+
+            let stagedURL = uniqueFileURL(in: stagingDirectory, preferredFilename: preferredFilename)
+            try moveDownloadedFile(from: downloadedAttachment.temporaryFileURL, to: stagedURL)
+            try await saveMediaToPhotoLibrary(from: stagedURL, contentType: contentType)
+            try? fileManager.removeItem(at: stagedURL)
+            return "Saved to Photos."
+        }
+#endif
+
+        let downloadsDirectory = try downloadDestinationDirectory()
+        let destinationURL = uniqueFileURL(in: downloadsDirectory, preferredFilename: preferredFilename)
+        try moveDownloadedFile(from: downloadedAttachment.temporaryFileURL, to: destinationURL)
+
+#if os(macOS)
+        NSWorkspace.shared.activateFileViewerSelecting([destinationURL])
+        return "Downloaded to Downloads."
+#else
+        return "Saved to Files."
+#endif
+    }
+
+    private func downloadDestinationDirectory() throws -> URL {
+#if os(iOS)
+        if let downloadsDirectory = try? fileManager.url(
+            for: .downloadsDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        ) {
+            return downloadsDirectory
+        }
+
+        let documentsDirectory = try fileManager.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
+        let fallbackDownloads = documentsDirectory.appendingPathComponent("Downloads", isDirectory: true)
+        try fileManager.createDirectory(at: fallbackDownloads, withIntermediateDirectories: true)
+        return fallbackDownloads
+#else
+        return try fileManager.url(
+            for: .downloadsDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
+#endif
+    }
+
+    private func moveDownloadedFile(from sourceURL: URL, to destinationURL: URL) throws {
+        do {
+            try fileManager.moveItem(at: sourceURL, to: destinationURL)
+        } catch {
+            if fileManager.fileExists(atPath: destinationURL.path) {
+                try fileManager.removeItem(at: destinationURL)
+            }
+            try fileManager.copyItem(at: sourceURL, to: destinationURL)
+            try? fileManager.removeItem(at: sourceURL)
+        }
+    }
+
+#if os(iOS)
+    private func isPhotoLibraryMedia(contentType: String?, fileURL: URL) -> Bool {
+        let filename = fileURL.lastPathComponent.lowercased()
+        if let contentType {
+            return contentType.hasPrefix("image/") || contentType.hasPrefix("video/")
+        }
+
+        return [".jpg", ".jpeg", ".png", ".gif", ".heic", ".webp", ".mov", ".mp4", ".m4v"]
+            .contains { filename.hasSuffix($0) }
+    }
+
+    private func saveMediaToPhotoLibrary(from fileURL: URL, contentType: String?) async throws {
+        let authorizationStatus = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        guard authorizationStatus == .authorized || authorizationStatus == .limited else {
+            throw FileActionError.photoLibraryAccessDenied
+        }
+
+        let isVideo = contentType?.hasPrefix("video/") == true
+            || [".mov", ".mp4", ".m4v"].contains { fileURL.lastPathComponent.lowercased().hasSuffix($0) }
+
+        try await withCheckedThrowingContinuation { continuation in
+            PHPhotoLibrary.shared().performChanges({
+                if isVideo {
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: fileURL)
+                } else {
+                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: fileURL)
+                }
+            }, completionHandler: { success, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if success {
+                    continuation.resume(returning: ())
+                } else {
+                    continuation.resume(throwing: FileActionError.photoLibraryAccessDenied)
+                }
+            })
+        }
+    }
+#endif
 
     deinit {
         periodicTask?.cancel()

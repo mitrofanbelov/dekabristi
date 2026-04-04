@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import enum
 
-from sqlalchemy import Enum, ForeignKey, String, Text
+from datetime import datetime
+
+from sqlalchemy import DateTime, Enum, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
@@ -36,6 +38,8 @@ class Item(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     )
     title: Mapped[str | None] = mapped_column(String(512), nullable=True)
     source_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    comment: Mapped[str | None] = mapped_column(Text, nullable=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, index=True)
 
     user = relationship("User", back_populates="items")
     attachments = relationship(

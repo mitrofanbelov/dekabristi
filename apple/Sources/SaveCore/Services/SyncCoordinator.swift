@@ -77,6 +77,21 @@ public final class SyncCoordinator: ObservableObject {
         lastErrorMessage = nil
     }
 
+    public func applyServerItem(_ item: RemoteItem) {
+        if item.deletedAt != nil {
+            items.removeAll { $0.id == item.id }
+            return
+        }
+
+        if let index = items.firstIndex(where: { $0.id == item.id }) {
+            items[index] = item
+        } else {
+            items.insert(item, at: 0)
+        }
+
+        items.sort { $0.updatedAt > $1.updatedAt }
+    }
+
     private func refresh(forceFullReload: Bool) async {
         isSyncing = true
         lastErrorMessage = nil
@@ -127,7 +142,11 @@ public final class SyncCoordinator: ObservableObject {
     private func merge(_ incomingItems: [RemoteItem]) {
         var merged = Dictionary(uniqueKeysWithValues: items.map { ($0.id, $0) })
         for item in incomingItems {
-            merged[item.id] = item
+            if item.deletedAt != nil {
+                merged.removeValue(forKey: item.id)
+            } else {
+                merged[item.id] = item
+            }
         }
         items = merged.values.sorted { $0.updatedAt > $1.updatedAt }
     }
