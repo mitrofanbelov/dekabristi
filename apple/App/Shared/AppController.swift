@@ -197,7 +197,7 @@ final class AppController: ObservableObject {
             let savedLocationMessage = try await persistDownloadedAttachment(
                 downloadedAttachment,
                 preferredFilename: attachment.originalFilename,
-                contentType: attachment.contentType
+                contentType: attachment.contentType ?? downloadedAttachment.contentType
             )
             noticeMessage = savedLocationMessage
             return true
@@ -350,7 +350,7 @@ final class AppController: ObservableObject {
         contentType: String?
     ) async throws -> String {
 #if os(iOS)
-        if isPhotoLibraryMedia(contentType: contentType, fileURL: downloadedAttachment.temporaryFileURL) {
+        if isPhotoLibraryMedia(contentType: contentType, preferredFilename: preferredFilename) {
             let stagingDirectory = fileManager.temporaryDirectory
                 .appendingPathComponent("DekabristiMediaDownloads", isDirectory: true)
             try fileManager.createDirectory(at: stagingDirectory, withIntermediateDirectories: true)
@@ -418,14 +418,24 @@ final class AppController: ObservableObject {
     }
 
 #if os(iOS)
-    private func isPhotoLibraryMedia(contentType: String?, fileURL: URL) -> Bool {
-        let filename = fileURL.lastPathComponent.lowercased()
-        if let contentType {
+    private func isPhotoLibraryMedia(contentType: String?, preferredFilename: String) -> Bool {
+        let filename = preferredFilename.lowercased()
+        if let contentType = normalizedContentType(contentType) {
             return contentType.hasPrefix("image/") || contentType.hasPrefix("video/")
         }
 
         return [".jpg", ".jpeg", ".png", ".gif", ".heic", ".webp", ".mov", ".mp4", ".m4v"]
             .contains { filename.hasSuffix($0) }
+    }
+
+    private func normalizedContentType(_ contentType: String?) -> String? {
+        guard let contentType else { return nil }
+        let normalized = contentType.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if normalized.isEmpty || normalized == "application/octet-stream" {
+            return nil
+        }
+
+        return normalized
     }
 
     private func saveMediaToPhotoLibrary(from fileURL: URL, contentType: String?) async throws {

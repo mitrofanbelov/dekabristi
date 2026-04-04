@@ -1,4 +1,5 @@
 import Foundation
+import UniformTypeIdentifiers
 
 public enum APIClientError: Error, LocalizedError {
     case invalidResponse
@@ -262,11 +263,31 @@ public final class APIClient: @unchecked Sendable {
         }
         data.append("--\(boundary)\r\n")
         data.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n")
-        data.append("Content-Type: application/octet-stream\r\n\r\n")
+        data.append("Content-Type: \(mimeType(for: fileURL))\r\n\r\n")
         data.append(fileData)
         data.append("\r\n")
         data.append("--\(boundary)--\r\n")
         return data
+    }
+
+    private func mimeType(for fileURL: URL) -> String {
+        if
+            let resourceValues = try? fileURL.resourceValues(forKeys: [.contentTypeKey]),
+            let contentType = resourceValues.contentType,
+            let preferredMIMEType = contentType.preferredMIMEType
+        {
+            return preferredMIMEType
+        }
+
+        if
+            let fileExtension = fileURL.pathExtension.nilIfEmpty,
+            let contentType = UTType(filenameExtension: fileExtension),
+            let preferredMIMEType = contentType.preferredMIMEType
+        {
+            return preferredMIMEType
+        }
+
+        return "application/octet-stream"
     }
 
     private func serverMessage(from data: Data, statusCode: Int) -> String {
@@ -402,5 +423,11 @@ private extension Data {
         if let encoded = string.data(using: .utf8) {
             append(encoded)
         }
+    }
+}
+
+private extension String {
+    var nilIfEmpty: String? {
+        isEmpty ? nil : self
     }
 }

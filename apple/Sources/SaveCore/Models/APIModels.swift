@@ -32,6 +32,19 @@ public struct RemoteItem: Codable, Identifiable, Equatable, Sendable {
     public let updatedAt: Date
     public let deletedAt: Date?
     public let attachments: [RemoteAttachment]
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case kind
+        case status
+        case title
+        case sourceURL = "source_url"
+        case comment
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case deletedAt = "deleted_at"
+        case attachments
+    }
 }
 
 public struct ItemListPage: Codable, Sendable {
