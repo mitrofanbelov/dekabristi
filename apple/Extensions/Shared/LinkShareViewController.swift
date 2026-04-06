@@ -29,10 +29,16 @@ final class LinkShareViewController: SLComposeServiceViewController {
                 let sharedLink = try await resolveSharedLink()
                 let normalizedURL = try LinkInputNormalizer.normalize(sharedLink.url)
                 let preferredTitle = normalizedOptionalText(contentText) ?? sharedLink.title
+                let pendingLink = PendingSharedLink(url: normalizedURL, title: preferredTitle)
+
+                // Always stage the shared URL into the shared queue first so the host app
+                // can finish the save flow even if the extension loses network/auth state.
+                await pendingSharedLinkStore.enqueue(pendingLink)
 
                 if await sessionStore.session() != nil {
                     do {
                         _ = try await apiClient.createLink(url: normalizedURL, title: preferredTitle)
+                        await pendingSharedLinkStore.remove(pendingLink.id)
                         extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
                         return
                     } catch {
@@ -40,9 +46,6 @@ final class LinkShareViewController: SLComposeServiceViewController {
                     }
                 }
 
-                await pendingSharedLinkStore.enqueue(
-                    PendingSharedLink(url: normalizedURL, title: preferredTitle)
-                )
                 extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             } catch {
                 extensionContext?.cancelRequest(withError: error)

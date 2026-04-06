@@ -37,6 +37,12 @@ private enum FileActionError: LocalizedError {
 
 @MainActor
 final class AppController: ObservableObject {
+    private static let syncPollIntervalSeconds: Double = 15
+    private static let connectivityProbeIntervalSeconds: Double = 1800
+    private static let connectivityProbeTickInterval = Int(
+        connectivityProbeIntervalSeconds / syncPollIntervalSeconds
+    )
+
     @Published private(set) var currentUser: UserProfile?
     @Published private(set) var isAuthenticating = false
     @Published private(set) var authErrorMessage: String?
@@ -263,7 +269,7 @@ final class AppController: ObservableObject {
         var tickIndex = 0
 
         while !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(600))
+            try? await Task.sleep(for: .seconds(Self.syncPollIntervalSeconds))
             guard !Task.isCancelled else { return }
 
             tickIndex += 1
@@ -271,7 +277,7 @@ final class AppController: ObservableObject {
                 await syncCoordinator.refreshOnTimerTick()
             }
 
-            if tickIndex.isMultiple(of: 3) {
+            if tickIndex.isMultiple(of: Self.connectivityProbeTickInterval) {
                 await connectivityMonitor.refreshServerReachability()
             }
         }

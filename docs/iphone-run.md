@@ -81,9 +81,12 @@ Set the same Apple signing team for all four targets:
 Important:
 
 - the iOS app and the iOS share extension must both sign successfully
-- the App Group is `group.com.dekabristi.shared`
+- the App Group is `group.com.ivangalkin.dekabristi.shared`
 - if Xcode reports that your current signing team cannot use App Groups, use a team that supports the capability
-- if device provisioning complains about `com.dekabristi.ios` or `com.dekabristi.ios.share`, you can set team-specific bundle IDs before regenerating the project:
+- the current repository default iPhone bundle IDs are:
+  - `com.ivangalkin.dekabristi.ios`
+  - `com.ivangalkin.dekabristi.ios.share`
+- if device provisioning still complains, you can set team-specific bundle IDs before regenerating the project:
 
 ```bash
 ./scripts/set-ios-bundle-ids.sh com.yourteam.dekabristi.ios com.yourteam.dekabristi.ios.share

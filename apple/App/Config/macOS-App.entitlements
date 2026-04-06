@@ -6,7 +6,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.dekabristi.shared</string>
+		<string>group.com.ivangalkin.dekabristi.shared</string>
 	</array>
 	<key>com.apple.security.files.downloads.read-write</key>
 	<true/>

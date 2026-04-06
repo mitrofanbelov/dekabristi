@@ -2,7 +2,7 @@ import Foundation
 
 public enum SharedAppConfiguration {
     public static let fallbackBaseURL = "http://127.0.0.1:8000/api/v1"
-    public static let fallbackAppGroupID = "group.com.dekabristi.shared"
+    public static let fallbackAppGroupID = "group.com.ivangalkin.dekabristi.shared"
     public static let sessionDefaultsKey = "dekabristi.auth.session"
     public static let pendingSharedLinksKey = "dekabristi.shared.pendingLinks"
 

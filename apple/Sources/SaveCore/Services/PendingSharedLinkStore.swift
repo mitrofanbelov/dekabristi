@@ -40,6 +40,16 @@ public actor PendingSharedLinkStore {
         return drafts
     }
 
+    public func remove(_ id: UUID) {
+        var drafts = loadDrafts()
+        drafts.removeAll { $0.id == id }
+        if drafts.isEmpty {
+            userDefaults.removeObject(forKey: SharedAppConfiguration.pendingSharedLinksKey)
+        } else {
+            saveDrafts(drafts)
+        }
+    }
+
     public func clear() {
         userDefaults.removeObject(forKey: SharedAppConfiguration.pendingSharedLinksKey)
     }

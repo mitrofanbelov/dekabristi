@@ -92,5 +92,5 @@ Run the backend test suite at any time:
 
 - The default API base URL is `http://127.0.0.1:8000/api/v1`, which is correct when the macOS app, macOS share extension, and backend run on the same Mac mini.
 - Physical iPhone builds cannot use `127.0.0.1`; they need the Mac mini LAN address or a public HTTPS domain.
-- The app and share extensions use the shared App Group `group.com.dekabristi.shared`.
+- The app and share extensions use the shared App Group `group.com.ivangalkin.dekabristi.shared`.
 - If iPhone still cannot reach the backend, check the macOS firewall and confirm the backend is reachable from another device on `http://<MAC_MINI_LAN_IP>:8000/api/v1/health`.
