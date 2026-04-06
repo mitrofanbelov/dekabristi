@@ -106,6 +106,13 @@ public struct HealthStatus: Codable, Equatable, Sendable {
     public let app: String
     public let syncPollIntervalSeconds: Int
     public let connectivityProbeIntervalSeconds: Int
+
+    enum CodingKeys: String, CodingKey {
+        case status
+        case app
+        case syncPollIntervalSeconds = "sync_poll_interval_seconds"
+        case connectivityProbeIntervalSeconds = "connectivity_probe_interval_seconds"
+    }
 }
 
 public struct RegisterPayload: Encodable, Sendable {
