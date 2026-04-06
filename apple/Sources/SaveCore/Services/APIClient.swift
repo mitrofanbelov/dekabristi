@@ -48,7 +48,6 @@ public final class APIClient: @unchecked Sendable {
         self.encoder = encoder
 
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .custom(DateParser.decode)
         self.decoder = decoder
     }

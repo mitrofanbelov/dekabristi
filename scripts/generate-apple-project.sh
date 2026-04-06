@@ -3,5 +3,33 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
-cd "$ROOT_DIR/apple"
+APPLE_DIR="$ROOT_DIR/apple"
+BACKUP_DIR="$(mktemp -d)"
+
+FILES_TO_PRESERVE=(
+  "$APPLE_DIR/App/Config/iOS-Info.plist"
+  "$APPLE_DIR/App/Config/macOS-Info.plist"
+  "$APPLE_DIR/App/Config/iOS-App.entitlements"
+  "$APPLE_DIR/App/Config/macOS-App.entitlements"
+  "$APPLE_DIR/Extensions/Config/iOS-ShareExtension-Info.plist"
+  "$APPLE_DIR/Extensions/Config/macOS-ShareExtension-Info.plist"
+  "$APPLE_DIR/Extensions/Config/iOS-ShareExtension.entitlements"
+  "$APPLE_DIR/Extensions/Config/macOS-ShareExtension.entitlements"
+)
+
+cleanup() {
+  rm -rf "$BACKUP_DIR"
+}
+
+trap cleanup EXIT
+
+for file in "${FILES_TO_PRESERVE[@]}"; do
+  cp "$file" "$BACKUP_DIR/$(basename "$file")"
+done
+
+cd "$APPLE_DIR"
 xcodegen generate
+
+for file in "${FILES_TO_PRESERVE[@]}"; do
+  cp "$BACKUP_DIR/$(basename "$file")" "$file"
+done
