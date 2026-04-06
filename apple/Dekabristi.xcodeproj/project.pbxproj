@@ -1,0 +1,806 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03E62D90ADA4D5A1989ED157 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE04037BFBC86281FBEFE0A /* AppController.swift */; };
+		07026F6C7F6BD3D56CF573F0 /* LinkShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B3AF054FB0283F4711D19C /* LinkShareViewController.swift */; };
+		0BD4D171AEE4C94BFB3893CB /* DekabristiIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626232D0B8BF1AFA77C8C588 /* DekabristiIOSApp.swift */; };
+		0F3DB32A36541E288861585A /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D6410D912FCD48BF7902F3 /* AppConfiguration.swift */; };
+		17620127A3AAB8AA3D3D1DFD /* DekabristiMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10170C706D9CFF67E880CF88 /* DekabristiMacApp.swift */; };
+		19BBE5A232EE2600E40FFF77 /* AddLinkSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD76C212BCE76EB091A39701 /* AddLinkSheet.swift */; };
+		1E58FDE82AEC8EDBEE973BB9 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D33665D9A2CE2A6C57B831E /* LoginScreen.swift */; };
+		2EA57BA1C9210C3DF5F66425 /* Dekabristi Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 06C881971B2355A62167C2A8 /* Dekabristi Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		35F19E6668AC27B8733D5474 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856E026267CFB9D98F2FFC91 /* RootView.swift */; };
+		4331DA3C23B616CDAA4E47CA /* AddLinkSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD76C212BCE76EB091A39701 /* AddLinkSheet.swift */; };
+		4520084A774925836BB97081 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE04037BFBC86281FBEFE0A /* AppController.swift */; };
+		5BE0852228192E622A97EA98 /* SaveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 70B2AE2EE18130FE24D04BA5 /* SaveCore */; };
+		5F9FC7002C5AEBF421715E42 /* SaveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 195DEB03C82367D558A0C74B /* SaveCore */; };
+		60EBF9BDBF0FF3CFB4A0C366 /* EditCommentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86769AA79C4AB59CB97918E /* EditCommentSheet.swift */; };
+		891D01505751E2C747EB004F /* LibraryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B68F6962C9E7D3106D2C253 /* LibraryScreen.swift */; };
+		92B9DC7066C83F5EC2801634 /* SaveCore in Frameworks */ = {isa = PBXBuildFile; productRef = CE14A9110CEDE3CDD1DAC8D8 /* SaveCore */; };
+		A11CC6DE7FF3294DF3E174C4 /* ConnectionStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A50B70710383F8BA5AD2BEC /* ConnectionStatusBanner.swift */; };
+		A51D90BB3BED672D746E9AD9 /* Dekabristi Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4CE2196A21C018994B023025 /* Dekabristi Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B6B85F99D97F0EE3751C8483 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D33665D9A2CE2A6C57B831E /* LoginScreen.swift */; };
+		B74D6402A4F3C8CF7BEB3646 /* LibraryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B68F6962C9E7D3106D2C253 /* LibraryScreen.swift */; };
+		BFC4DC8E48B591FC9E33B99D /* ConnectionStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A50B70710383F8BA5AD2BEC /* ConnectionStatusBanner.swift */; };
+		C5FA315822C8B34767155D76 /* SaveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 77024029995C2E7CC7F63ADE /* SaveCore */; };
+		D03160C6253ECA7212F7A3D0 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856E026267CFB9D98F2FFC91 /* RootView.swift */; };
+		D78D6E337E06229562EB57AA /* EditCommentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86769AA79C4AB59CB97918E /* EditCommentSheet.swift */; };
+		D795A1C9335663B91BD50EE5 /* LinkShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B3AF054FB0283F4711D19C /* LinkShareViewController.swift */; };
+		D80ED030D3DF3BBDFC8D6585 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D6410D912FCD48BF7902F3 /* AppConfiguration.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		19A139E28EDB7DD89899199E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 833BA6AF6BFDA572AF9F4E10 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AFA1ADEFD28F6FE22B0E974A;
+			remoteInfo = DekabristiIOSShareExtension;
+		};
+		5ED2296E7AC0B39613ABC7F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 833BA6AF6BFDA572AF9F4E10 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3F2551AF3A264EC26740B41;
+			remoteInfo = DekabristiMacShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		65BD2D66FACD587133C27B56 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2EA57BA1C9210C3DF5F66425 /* Dekabristi Share.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE1957D4696442038E14FBF6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A51D90BB3BED672D746E9AD9 /* Dekabristi Share.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		06C881971B2355A62167C2A8 /* Dekabristi Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Dekabristi Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		10170C706D9CFF67E880CF88 /* DekabristiMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DekabristiMacApp.swift; sourceTree = "<group>"; };
+		18A45BB452A2D721C388DC49 /* Dekabristi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dekabristi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A50B70710383F8BA5AD2BEC /* ConnectionStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusBanner.swift; sourceTree = "<group>"; };
+		1B68F6962C9E7D3106D2C253 /* LibraryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScreen.swift; sourceTree = "<group>"; };
+		26B3AF054FB0283F4711D19C /* LinkShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkShareViewController.swift; sourceTree = "<group>"; };
+		4CE2196A21C018994B023025 /* Dekabristi Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Dekabristi Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		626232D0B8BF1AFA77C8C588 /* DekabristiIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DekabristiIOSApp.swift; sourceTree = "<group>"; };
+		797936F358E6C862182C3FEA /* Dekabristi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dekabristi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		856E026267CFB9D98F2FFC91 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		9D33665D9A2CE2A6C57B831E /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		A5D6410D912FCD48BF7902F3 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		BCE04037BFBC86281FBEFE0A /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		DD76C212BCE76EB091A39701 /* AddLinkSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLinkSheet.swift; sourceTree = "<group>"; };
+		F69565638E77C5D1C6E29AE9 /* apple */ = {isa = PBXFileReference; lastKnownFileType = folder; name = apple; path = .; sourceTree = SOURCE_ROOT; };
+		F86769AA79C4AB59CB97918E /* EditCommentSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCommentSheet.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A9F39C34B066354353925EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92B9DC7066C83F5EC2801634 /* SaveCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6299D96027DF17EF9A545E05 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5FA315822C8B34767155D76 /* SaveCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80BD2755729E7C53C88B3DFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BE0852228192E622A97EA98 /* SaveCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8431C63F5D4551C60474EF14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F9FC7002C5AEBF421715E42 /* SaveCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		24D51EF4877B59D5944BC5D6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4C7B13E3E0BE49897B2A4D1B /* iOS */,
+				8A07C4B62FAF69E4D05F113E /* macOS */,
+				731DE36AD50C550740ED51FB /* Shared */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3F9F55E436EE02280A11371C /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F69565638E77C5D1C6E29AE9 /* apple */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		4C7B13E3E0BE49897B2A4D1B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				626232D0B8BF1AFA77C8C588 /* DekabristiIOSApp.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		5EF5082A3A10ED496E2E3215 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				26B3AF054FB0283F4711D19C /* LinkShareViewController.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		731DE36AD50C550740ED51FB /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				DD76C212BCE76EB091A39701 /* AddLinkSheet.swift */,
+				A5D6410D912FCD48BF7902F3 /* AppConfiguration.swift */,
+				BCE04037BFBC86281FBEFE0A /* AppController.swift */,
+				1A50B70710383F8BA5AD2BEC /* ConnectionStatusBanner.swift */,
+				F86769AA79C4AB59CB97918E /* EditCommentSheet.swift */,
+				1B68F6962C9E7D3106D2C253 /* LibraryScreen.swift */,
+				9D33665D9A2CE2A6C57B831E /* LoginScreen.swift */,
+				856E026267CFB9D98F2FFC91 /* RootView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		7927993B74D72C0799A43C84 = {
+			isa = PBXGroup;
+			children = (
+				24D51EF4877B59D5944BC5D6 /* App */,
+				917C035B81EDFA64DBFB8864 /* Extensions */,
+				3F9F55E436EE02280A11371C /* Packages */,
+				F0C0083A19E23235ED7992B2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8A07C4B62FAF69E4D05F113E /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				10170C706D9CFF67E880CF88 /* DekabristiMacApp.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		917C035B81EDFA64DBFB8864 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5EF5082A3A10ED496E2E3215 /* Shared */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F0C0083A19E23235ED7992B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				797936F358E6C862182C3FEA /* Dekabristi.app */,
+				06C881971B2355A62167C2A8 /* Dekabristi Share.appex */,
+				18A45BB452A2D721C388DC49 /* Dekabristi.app */,
+				4CE2196A21C018994B023025 /* Dekabristi Share.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		658034447CBEB5BB4F4C405C /* DekabristiMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 73C1345566412F67D036E0BF /* Build configuration list for PBXNativeTarget "DekabristiMac" */;
+			buildPhases = (
+				2DAE54535F35461FB5FB2ADF /* Sources */,
+				80BD2755729E7C53C88B3DFA /* Frameworks */,
+				EE1957D4696442038E14FBF6 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5F24D59E848FA0C95153028E /* PBXTargetDependency */,
+			);
+			name = DekabristiMac;
+			packageProductDependencies = (
+				70B2AE2EE18130FE24D04BA5 /* SaveCore */,
+			);
+			productName = DekabristiMac;
+			productReference = 18A45BB452A2D721C388DC49 /* Dekabristi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		92E04891B77DD622B553537A /* DekabristiIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9D03523760F2551F2609DCC /* Build configuration list for PBXNativeTarget "DekabristiIOS" */;
+			buildPhases = (
+				9A64BA261E189FC78B054EA3 /* Sources */,
+				8431C63F5D4551C60474EF14 /* Frameworks */,
+				65BD2D66FACD587133C27B56 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FBB6D411F14321C7B611FDAA /* PBXTargetDependency */,
+			);
+			name = DekabristiIOS;
+			packageProductDependencies = (
+				195DEB03C82367D558A0C74B /* SaveCore */,
+			);
+			productName = DekabristiIOS;
+			productReference = 797936F358E6C862182C3FEA /* Dekabristi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AFA1ADEFD28F6FE22B0E974A /* DekabristiIOSShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D861179CA53389EEE8C0EDF5 /* Build configuration list for PBXNativeTarget "DekabristiIOSShareExtension" */;
+			buildPhases = (
+				635B45B7749F671EDE250B5B /* Sources */,
+				2A9F39C34B066354353925EA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DekabristiIOSShareExtension;
+			packageProductDependencies = (
+				CE14A9110CEDE3CDD1DAC8D8 /* SaveCore */,
+			);
+			productName = DekabristiIOSShareExtension;
+			productReference = 06C881971B2355A62167C2A8 /* Dekabristi Share.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		F3F2551AF3A264EC26740B41 /* DekabristiMacShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 115D2730A24708EFADD52A6A /* Build configuration list for PBXNativeTarget "DekabristiMacShareExtension" */;
+			buildPhases = (
+				38BAE350E3F45BBAC09E8761 /* Sources */,
+				6299D96027DF17EF9A545E05 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DekabristiMacShareExtension;
+			packageProductDependencies = (
+				77024029995C2E7CC7F63ADE /* SaveCore */,
+			);
+			productName = DekabristiMacShareExtension;
+			productReference = 4CE2196A21C018994B023025 /* Dekabristi Share.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		833BA6AF6BFDA572AF9F4E10 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					658034447CBEB5BB4F4C405C = {
+						ProvisioningStyle = Automatic;
+					};
+					92E04891B77DD622B553537A = {
+						ProvisioningStyle = Automatic;
+					};
+					AFA1ADEFD28F6FE22B0E974A = {
+						ProvisioningStyle = Automatic;
+					};
+					F3F2551AF3A264EC26740B41 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 1BE92220CBB3708C3C72563D /* Build configuration list for PBXProject "Dekabristi" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7927993B74D72C0799A43C84;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0DA9833FFE49440A583C9CFB /* XCLocalSwiftPackageReference "." */,
+			);
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				92E04891B77DD622B553537A /* DekabristiIOS */,
+				AFA1ADEFD28F6FE22B0E974A /* DekabristiIOSShareExtension */,
+				658034447CBEB5BB4F4C405C /* DekabristiMac */,
+				F3F2551AF3A264EC26740B41 /* DekabristiMacShareExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2DAE54535F35461FB5FB2ADF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4331DA3C23B616CDAA4E47CA /* AddLinkSheet.swift in Sources */,
+				D80ED030D3DF3BBDFC8D6585 /* AppConfiguration.swift in Sources */,
+				03E62D90ADA4D5A1989ED157 /* AppController.swift in Sources */,
+				A11CC6DE7FF3294DF3E174C4 /* ConnectionStatusBanner.swift in Sources */,
+				17620127A3AAB8AA3D3D1DFD /* DekabristiMacApp.swift in Sources */,
+				D78D6E337E06229562EB57AA /* EditCommentSheet.swift in Sources */,
+				B74D6402A4F3C8CF7BEB3646 /* LibraryScreen.swift in Sources */,
+				B6B85F99D97F0EE3751C8483 /* LoginScreen.swift in Sources */,
+				35F19E6668AC27B8733D5474 /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		38BAE350E3F45BBAC09E8761 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07026F6C7F6BD3D56CF573F0 /* LinkShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		635B45B7749F671EDE250B5B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D795A1C9335663B91BD50EE5 /* LinkShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A64BA261E189FC78B054EA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19BBE5A232EE2600E40FFF77 /* AddLinkSheet.swift in Sources */,
+				0F3DB32A36541E288861585A /* AppConfiguration.swift in Sources */,
+				4520084A774925836BB97081 /* AppController.swift in Sources */,
+				BFC4DC8E48B591FC9E33B99D /* ConnectionStatusBanner.swift in Sources */,
+				0BD4D171AEE4C94BFB3893CB /* DekabristiIOSApp.swift in Sources */,
+				60EBF9BDBF0FF3CFB4A0C366 /* EditCommentSheet.swift in Sources */,
+				891D01505751E2C747EB004F /* LibraryScreen.swift in Sources */,
+				1E58FDE82AEC8EDBEE973BB9 /* LoginScreen.swift in Sources */,
+				D03160C6253ECA7212F7A3D0 /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5F24D59E848FA0C95153028E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3F2551AF3A264EC26740B41 /* DekabristiMacShareExtension */;
+			targetProxy = 5ED2296E7AC0B39613ABC7F6 /* PBXContainerItemProxy */;
+		};
+		FBB6D411F14321C7B611FDAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AFA1ADEFD28F6FE22B0E974A /* DekabristiIOSShareExtension */;
+			targetProxy = 19A139E28EDB7DD89899199E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		170B053DEB366F90957BE134 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Extensions/Config/macOS-ShareExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Extensions/Config/macOS-ShareExtension-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.mac.share;
+				PRODUCT_NAME = "Dekabristi Share";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.1;
+			};
+			name = Release;
+		};
+		1961A7C4241CFEE1EFB19FFA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Extensions/Config/iOS-ShareExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Extensions/Config/iOS-ShareExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.ios.share;
+				PRODUCT_NAME = "Dekabristi Share";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		536166566EA19800EF674BDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Extensions/Config/macOS-ShareExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Extensions/Config/macOS-ShareExtension-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.mac.share;
+				PRODUCT_NAME = "Dekabristi Share";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.1;
+			};
+			name = Debug;
+		};
+		61EAEA4B81A8AD50131CA66A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "App/Config/iOS-App.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "App/Config/iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.ios;
+				PRODUCT_NAME = Dekabristi;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		70655EEC75604C589EBA4349 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		73AA0C5B7D7BA759949C4AF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Extensions/Config/iOS-ShareExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Extensions/Config/iOS-ShareExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.ios.share;
+				PRODUCT_NAME = "Dekabristi Share";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		76505F380B6D7A317C23A441 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "App/Config/macOS-App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "App/Config/macOS-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.mac;
+				PRODUCT_NAME = Dekabristi;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.1;
+			};
+			name = Release;
+		};
+		776157EF9E7C457F2C103AD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C78DBDE4F41731553329D18C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "App/Config/macOS-App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "App/Config/macOS-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.mac;
+				PRODUCT_NAME = Dekabristi;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.1;
+			};
+			name = Debug;
+		};
+		D9625982DEF0E985C47DDEE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "App/Config/iOS-App.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3CMKBSFU5S;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "App/Config/iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivangalkin.dekabristi.ios;
+				PRODUCT_NAME = Dekabristi;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		115D2730A24708EFADD52A6A /* Build configuration list for PBXNativeTarget "DekabristiMacShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				536166566EA19800EF674BDE /* Debug */,
+				170B053DEB366F90957BE134 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1BE92220CBB3708C3C72563D /* Build configuration list for PBXProject "Dekabristi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				776157EF9E7C457F2C103AD8 /* Debug */,
+				70655EEC75604C589EBA4349 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		73C1345566412F67D036E0BF /* Build configuration list for PBXNativeTarget "DekabristiMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C78DBDE4F41731553329D18C /* Debug */,
+				76505F380B6D7A317C23A441 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A9D03523760F2551F2609DCC /* Build configuration list for PBXNativeTarget "DekabristiIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61EAEA4B81A8AD50131CA66A /* Debug */,
+				D9625982DEF0E985C47DDEE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D861179CA53389EEE8C0EDF5 /* Build configuration list for PBXNativeTarget "DekabristiIOSShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				73AA0C5B7D7BA759949C4AF8 /* Debug */,
+				1961A7C4241CFEE1EFB19FFA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		0DA9833FFE49440A583C9CFB /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		195DEB03C82367D558A0C74B /* SaveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SaveCore;
+		};
+		70B2AE2EE18130FE24D04BA5 /* SaveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SaveCore;
+		};
+		77024029995C2E7CC7F63ADE /* SaveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SaveCore;
+		};
+		CE14A9110CEDE3CDD1DAC8D8 /* SaveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SaveCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 833BA6AF6BFDA572AF9F4E10 /* Project object */;
+}

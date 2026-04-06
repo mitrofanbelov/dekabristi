@@ -20,17 +20,15 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>Dekabristi Share connects to your Mac mini backend on your local network.</string>
+	<key>DEKABRISTI_API_BASE_URL</key>
+	<string>http://192.168.0.220:8000/api/v1</string>
+	<key>DEKABRISTI_APP_GROUP_ID</key>
+	<string>group.com.dekabristi.shared</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>DEKABRISTI_API_BASE_URL</key>
-	<string>http://127.0.0.1:8000/api/v1</string>
-	<key>DEKABRISTI_APP_GROUP_ID</key>
-	<string>group.com.dekabristi.shared</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -48,5 +46,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).LinkShareViewController</string>
 	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Dekabristi Share connects to your Mac mini backend on your local network.</string>
 </dict>
 </plist>

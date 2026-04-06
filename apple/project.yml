@@ -80,7 +80,7 @@ targets:
       path: App/Config/iOS-App.entitlements
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.ios
+        PRODUCT_BUNDLE_IDENTIFIER: com.ivangalkin.dekabristi.ios
         PRODUCT_NAME: Dekabristi
         SWIFT_VERSION: 5.10
         CODE_SIGN_STYLE: Automatic
@@ -104,7 +104,7 @@ targets:
       path: Extensions/Config/iOS-ShareExtension.entitlements
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.ios.share
+        PRODUCT_BUNDLE_IDENTIFIER: com.ivangalkin.dekabristi.ios.share
         PRODUCT_NAME: Dekabristi Share
         SWIFT_VERSION: 5.10
         CODE_SIGN_STYLE: Automatic
