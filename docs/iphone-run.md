@@ -60,6 +60,8 @@ This updates:
 
 Do not change the macOS plist files if the Mac app still runs against the backend on the same Mac mini.
 
+For physical iPhone builds, Dekabristi now prefers the embedded `Info.plist` backend URL over any Xcode scheme environment override. That prevents stale device runs from silently falling back to `127.0.0.1`.
+
 ## Generate and open the Xcode project
 
 ```bash
@@ -81,6 +83,12 @@ Important:
 - the iOS app and the iOS share extension must both sign successfully
 - the App Group is `group.com.dekabristi.shared`
 - if Xcode reports that your current signing team cannot use App Groups, use a team that supports the capability
+- if device provisioning complains about `com.dekabristi.ios` or `com.dekabristi.ios.share`, you can set team-specific bundle IDs before regenerating the project:
+
+```bash
+./scripts/set-ios-bundle-ids.sh com.yourteam.dekabristi.ios com.yourteam.dekabristi.ios.share
+./scripts/generate-apple-project.sh
+```
 
 ## Prepare the iPhone
 
@@ -99,6 +107,25 @@ Important:
    - open `Settings -> General -> VPN & Device Management`
    - trust the developer profile
    - launch the app again
+
+If you previously installed an older device build, it is safer to:
+
+1. delete the old Dekabristi app from the iPhone
+2. in Xcode use `Product -> Clean Build Folder`
+3. build and install again
+
+If Xcode runtime logs on the iPhone still show:
+
+- `127.0.0.1:8000`
+- `interface: lo0`
+- `Connection refused`
+
+then the running app is still not using the expected device configuration. In that case:
+
+1. rerun `./scripts/set-ios-backend-url.sh http://<MAC_MINI_LAN_IP>:8000/api/v1`
+2. regenerate the project with `./scripts/generate-apple-project.sh`
+3. delete the app from the iPhone
+4. rebuild and reinstall from Xcode
 
 ## Verify the app flow on iPhone
 
