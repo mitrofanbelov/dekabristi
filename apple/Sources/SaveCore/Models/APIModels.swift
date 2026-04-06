@@ -67,6 +67,12 @@ public struct AuthSession: Codable, Equatable, Sendable {
     public let accessToken: String
     public let tokenType: String
     public let user: UserProfile
+
+    public init(accessToken: String, tokenType: String, user: UserProfile) {
+        self.accessToken = accessToken
+        self.tokenType = tokenType
+        self.user = user
+    }
 }
 
 public struct HealthStatus: Codable, Equatable, Sendable {

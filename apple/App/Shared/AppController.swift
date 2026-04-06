@@ -96,20 +96,20 @@ final class AppController: ObservableObject {
     }
 
     func signIn(email: String, password: String) async {
-        await authenticate {
-            let session = try await apiClient.login(email: email, password: password)
-            currentUser = session.user
-            await importPendingSharedLinksIfNeeded()
-            await syncCoordinator.refreshFromLaunchOrManualTrigger()
+        await authenticate { [self] in
+            let session = try await self.apiClient.login(email: email, password: password)
+            self.currentUser = session.user
+            await self.importPendingSharedLinksIfNeeded()
+            await self.syncCoordinator.refreshFromLaunchOrManualTrigger()
         }
     }
 
     func register(email: String, password: String) async {
-        await authenticate {
-            let session = try await apiClient.register(email: email, password: password)
-            currentUser = session.user
-            await importPendingSharedLinksIfNeeded()
-            await syncCoordinator.refreshFromLaunchOrManualTrigger()
+        await authenticate { [self] in
+            let session = try await self.apiClient.register(email: email, password: password)
+            self.currentUser = session.user
+            await self.importPendingSharedLinksIfNeeded()
+            await self.syncCoordinator.refreshFromLaunchOrManualTrigger()
         }
     }
 
@@ -447,7 +447,7 @@ final class AppController: ObservableObject {
         let isVideo = contentType?.hasPrefix("video/") == true
             || [".mov", ".mp4", ".m4v"].contains { fileURL.lastPathComponent.lowercased().hasSuffix($0) }
 
-        try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges({
                 if isVideo {
                     PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: fileURL)
