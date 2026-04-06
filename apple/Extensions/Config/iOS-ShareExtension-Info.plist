@@ -23,7 +23,7 @@
 	<key>DEKABRISTI_API_BASE_URL</key>
 	<string>http://192.168.0.220:8000/api/v1</string>
 	<key>DEKABRISTI_APP_GROUP_ID</key>
-	<string>group.com.dekabristi.shared</string>
+	<string>group.com.ivangalkin.dekabristi.shared</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
@@ -35,6 +35,10 @@
 		<dict>
 			<key>NSExtensionActivationRule</key>
 			<dict>
+				<key>NSExtensionActivationDictionaryVersion</key>
+				<integer>2</integer>
+				<key>NSExtensionActivationSupportsText</key>
+				<true/>
 				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
 				<integer>1</integer>
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
