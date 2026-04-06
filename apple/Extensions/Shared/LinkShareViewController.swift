@@ -50,9 +50,11 @@ final class LinkShareViewController: SLComposeServiceViewController {
         }
     }
 
+#if os(iOS)
     override func configurationItems() -> [Any]! {
         []
     }
+#endif
 
     private func resolveSharedLink() async throws -> PendingSharedLink {
         let inputItems = extensionContext?.inputItems as? [NSExtensionItem] ?? []
