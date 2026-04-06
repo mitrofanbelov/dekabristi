@@ -14,14 +14,14 @@ public final class SessionViewModel: ObservableObject {
     }
 
     public func register(email: String, password: String) async {
-        await perform {
+        await perform { [self] in
             let session = try await apiClient.register(email: email, password: password)
             currentUser = session.user
         }
     }
 
     public func login(email: String, password: String) async {
-        await perform {
+        await perform { [self] in
             let session = try await apiClient.login(email: email, password: password)
             currentUser = session.user
         }

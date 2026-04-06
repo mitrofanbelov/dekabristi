@@ -19,6 +19,15 @@ public struct RemoteAttachment: Codable, Identifiable, Equatable, Sendable {
     public let sizeBytes: Int
     public let sha256: String
     public let createdAt: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case originalFilename = "original_filename"
+        case contentType = "content_type"
+        case sizeBytes = "size_bytes"
+        case sha256
+        case createdAt = "created_at"
+    }
 }
 
 public struct RemoteItem: Codable, Identifiable, Equatable, Sendable {
@@ -50,12 +59,23 @@ public struct RemoteItem: Codable, Identifiable, Equatable, Sendable {
 public struct ItemListPage: Codable, Sendable {
     public let items: [RemoteItem]
     public let nextCursor: Date?
+
+    enum CodingKeys: String, CodingKey {
+        case items
+        case nextCursor = "next_cursor"
+    }
 }
 
 public struct SyncPage: Codable, Sendable {
     public let items: [RemoteItem]
     public let nextCursor: Date?
     public let hasMore: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case items
+        case nextCursor = "next_cursor"
+        case hasMore = "has_more"
+    }
 }
 
 public struct UserProfile: Codable, Equatable, Sendable {
@@ -67,6 +87,18 @@ public struct AuthSession: Codable, Equatable, Sendable {
     public let accessToken: String
     public let tokenType: String
     public let user: UserProfile
+
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+        case user
+    }
+
+    public init(accessToken: String, tokenType: String, user: UserProfile) {
+        self.accessToken = accessToken
+        self.tokenType = tokenType
+        self.user = user
+    }
 }
 
 public struct HealthStatus: Codable, Equatable, Sendable {

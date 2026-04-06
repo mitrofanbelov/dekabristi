@@ -37,7 +37,7 @@
 		<true/>
 	</dict>
 	<key>DEKABRISTI_API_BASE_URL</key>
-	<string>http://127.0.0.1:8000/api/v1</string>
+	<string>http://192.168.0.220:8000/api/v1</string>
 	<key>DEKABRISTI_APP_GROUP_ID</key>
 	<string>group.com.dekabristi.shared</string>
 </dict>
