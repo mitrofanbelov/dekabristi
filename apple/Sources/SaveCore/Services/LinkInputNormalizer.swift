@@ -50,4 +50,31 @@ public enum LinkInputNormalizer {
 
         return components.string ?? candidate
     }
+
+    public static func firstWebLink(in rawValue: String) -> String? {
+        let trimmed = rawValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+
+        if let normalized = try? normalize(trimmed) {
+            return normalized
+        }
+
+        guard
+            let detector = try? NSDataDetector(
+                types: NSTextCheckingResult.CheckingType.link.rawValue
+            )
+        else {
+            return nil
+        }
+
+        let range = NSRange(trimmed.startIndex..<trimmed.endIndex, in: trimmed)
+        for match in detector.matches(in: trimmed, options: [], range: range) {
+            guard let url = match.url, let normalized = try? normalize(url.absoluteString) else {
+                continue
+            }
+            return normalized
+        }
+
+        return nil
+    }
 }

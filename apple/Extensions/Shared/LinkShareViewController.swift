@@ -20,14 +20,16 @@ final class LinkShareViewController: SLComposeServiceViewController {
             return false
         }
 
-        return (try? LinkInputNormalizer.normalize(contentText)) != nil
+        return LinkInputNormalizer.firstWebLink(in: contentText) != nil
     }
 
     override func didSelectPost() {
         Task { @MainActor in
             do {
                 let sharedLink = try await resolveSharedLink()
-                let normalizedURL = try LinkInputNormalizer.normalize(sharedLink.url)
+                guard let normalizedURL = LinkInputNormalizer.firstWebLink(in: sharedLink.url) else {
+                    throw LinkInputNormalizationError.invalidFormat
+                }
                 let preferredTitle = normalizedOptionalText(contentText) ?? sharedLink.title
                 let pendingLink = PendingSharedLink(url: normalizedURL, title: preferredTitle)
 

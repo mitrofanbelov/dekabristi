@@ -30,7 +30,7 @@ targets:
       path: App/Config/macOS-App.entitlements
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.mac
+        PRODUCT_BUNDLE_IDENTIFIER: com.ivangalkin.dekabristi.mac
         PRODUCT_NAME: Dekabristi
         SWIFT_VERSION: 5.10
         CODE_SIGN_STYLE: Automatic
@@ -54,7 +54,7 @@ targets:
       path: Extensions/Config/macOS-ShareExtension.entitlements
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.dekabristi.mac.share
+        PRODUCT_BUNDLE_IDENTIFIER: com.ivangalkin.dekabristi.mac.share
         PRODUCT_NAME: Dekabristi Share
         SWIFT_VERSION: 5.10
         CODE_SIGN_STYLE: Automatic
